@@ -33,7 +33,7 @@
   "scripts": {
     "start": "node bin/flexbar-sim.js",
     "fixture": "node bin/flexbar-sim.js fixtures/test-plugin/com.mutedeck.flexbar-simtest.plugin",
-    "test": "node --test test/"
+    "test": "node --test"
   },
   "engines": {
     "node": ">=20"
