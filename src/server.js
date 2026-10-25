@@ -33,7 +33,8 @@ function summarize(value, depth = 0) {
     if (depth > 6) {
       return '…'
     }
-    return Object.fromEntries(Object.entries(value).map(([k, v]) => [k, summarize(v, depth + 1)]))
+    // Tokens (e.g. a MuteDeck pairing token saved through setConfig) never reach the UI.
+    return Object.fromEntries(Object.entries(value).map(([k, v]) => [k, /token|secret|password/i.test(k) ? '<redacted>' : summarize(v, depth + 1)]))
   }
   return value
 }
@@ -103,8 +104,12 @@ export async function startUiServer(sim, { port = 4790 } = {}) {
     })
   })
 
+  // The WebSocket server re-emits the HTTP server's errors; the listen promise below reports them.
+  wss.on('error', () => {})
   await new Promise((resolve, reject) => {
-    server.once('error', reject)
+    server.once('error', (error) => {
+      reject(error.code === 'EADDRINUSE' ? new Error(`port ${port} is in use (another simulator running?). Use --ui-port.`) : error)
+    })
     server.listen(port, '127.0.0.1', resolve)
   })
   return { url: `http://localhost:${server.address().port}`, close: () => new Promise((resolve) => { wss.close(); server.close(resolve) }) }

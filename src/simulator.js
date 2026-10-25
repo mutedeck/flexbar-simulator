@@ -109,13 +109,18 @@ export class Simulator extends EventEmitter {
     fs.writeFileSync(this.statePath, JSON.stringify(state, null, 2))
   }
 
-  /** First run: every library key on page 1 (directDraw keys get their own page). */
+  /** First run: library keys fill pages left to right; a full page starts a new one, directDraw keys get their own. */
   autoLayout() {
+    let page = this.pages[0]
+    let used = 0
     for (const def of this.plugin.keys) {
-      if (def.config.keyType === 'directDraw') {
-        this.addPage(`${def.title}`, false)
+      const width = def.config.keyType === 'directDraw' ? STRIP_WIDTH : def.style.width ?? DEFAULT_STYLE.width
+      if (used > 0 && used + width > STRIP_WIDTH) {
+        page = this.addPage(`Page ${this.pages.length + 1}`, false)
+        used = 0
       }
-      this.placeKey(def.cid, { notify: false, pageId: def.config.keyType === 'directDraw' ? this.pages.at(-1).id : this.pages[0].id })
+      this.placeKey(def.cid, { notify: false, pageId: page.id })
+      used += width
     }
     this.currentPage = this.pages[0].id
     this.save()

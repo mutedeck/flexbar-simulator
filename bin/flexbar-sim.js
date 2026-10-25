@@ -57,7 +57,13 @@ sim.on('log', ({ stream, text }) => {
   }
 })
 
-const ui = await startUiServer(sim, { port: Number(values['ui-port']) })
+let ui
+try {
+  ui = await startUiServer(sim, { port: Number(values['ui-port']) })
+} catch (error) {
+  console.error(`flexbar-sim: ${error.message}`)
+  process.exit(1)
+}
 console.log(`[sim] ${sim.plugin.name} (${sim.plugin.uuid}) → ${ui.url}`)
 await sim.start()
 
