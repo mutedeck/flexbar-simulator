@@ -7,7 +7,7 @@ import { fileURLToPath } from 'node:url'
 
 import { Simulator } from '../src/simulator.js'
 
-const FIXTURE = fileURLToPath(new URL('../fixtures/test-plugin/com.mutedeck.simtest.plugin', import.meta.url))
+const FIXTURE = fileURLToPath(new URL('../fixtures/test-plugin/com.mutedeck.flexbar-simtest.plugin', import.meta.url))
 
 let sim
 let stateDir
@@ -43,7 +43,7 @@ after(async () => {
 test('first run lays out every library key; directDraw gets its own page', () => {
   assert.equal(sim.pages.length, 2)
   assert.equal(sim.pages[0].uids.length, 6)
-  assert.equal(sim.keys.get(sim.pages[1].uids[0]).cid, 'com.mutedeck.simtest.directdraw')
+  assert.equal(sim.keys.get(sim.pages[1].uids[0]).cid, 'com.mutedeck.flexbar-simtest.directdraw')
   assert.equal(sim.alive.size, 6, 'only page 1 keys are alive')
 })
 

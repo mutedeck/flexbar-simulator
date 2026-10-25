@@ -2,15 +2,21 @@
 
 A fake FlexDesigner with a fake Flexbar, so you can develop and test Flexbar plugins without the hardware.
 
+> **Unofficial.** This is a community tool by [MuteDeck](https://mutedeck.com), built while making the MuteDeck plugin for Flexbar. It is not made, endorsed or supported by ENIAC. Flexbar, FlexDesigner and FlexStudio are ENIAC's trademarks.
+
 It targets the **FlexDesigner v1 plugin SDK** (`@eniac/flexdesigner`). ENIAC's upcoming FlexStudio uses a different plugin SDK (`@flexsdk/*`), and this simulator does not cover it.
 
 The simulator works at the protocol level. It starts your plugin backend exactly as FlexDesigner does and speaks the same WebSocket protocol. A browser page shows a 2170×60 strip where you tap, slide, scroll and touch keys.
 
+Requires Node.js 20 or later.
+
 ```
+git clone https://github.com/mutedeck/flexbar-simulator.git
+cd flexbar-simulator
 npm install
 npm run fixture                          # run the bundled test plugin
 node bin/flexbar-sim.js <plugin-dir>     # run your plugin (the folder with manifest.json)
-npm test                                 # end-to-end tests against the fixture plugin
+npm test                                 # end-to-end tests (fixture plugin + UI server)
 ```
 
 Options: `--ui-port 4790`, `--plugin-port <port>` (random by default), `--serial SIM0000000001`, `--state-dir .flexbar-sim`, `--no-open`.
@@ -59,3 +65,13 @@ ui/                        the strip UI (plain JS, MDI font from @mdi/font)
 fixtures/test-plugin/      plugin that exercises every key type and SDK call
 test/                      node:test end-to-end tests
 ```
+
+## Status and contributing
+
+The simulator was written from the SDK source and docs, then checked against a real plugin. Without a Flexbar on the desk, the behaviours in the **Assumptions** tab are educated guesses. If you have a device and see FlexDesigner behave differently, please [open an issue](https://github.com/mutedeck/flexbar-simulator/issues) with what you saw, or send a pull request (with a test in `test/` where possible).
+
+The browser UI only listens on `127.0.0.1` and only accepts requests addressed to `localhost` from its own page, so other websites you have open can't drive your plugin.
+
+## License
+
+[MIT](LICENSE)

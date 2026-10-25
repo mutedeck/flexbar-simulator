@@ -1,15 +1,38 @@
 {
   "name": "flexbar-simulator",
   "version": "0.1.0",
-  "private": true,
   "description": "Protocol-level FlexDesigner + Flexbar simulator for developing Flexbar (FlexDesigner v1) plugins without hardware",
+  "license": "MIT",
+  "author": "MuteDeck",
+  "repository": {
+    "type": "git",
+    "url": "git+https://github.com/mutedeck/flexbar-simulator.git"
+  },
+  "homepage": "https://github.com/mutedeck/flexbar-simulator#readme",
+  "bugs": {
+    "url": "https://github.com/mutedeck/flexbar-simulator/issues"
+  },
+  "keywords": [
+    "flexbar",
+    "flexdesigner",
+    "eniac",
+    "plugin",
+    "simulator"
+  ],
   "type": "module",
   "bin": {
     "flexbar-sim": "bin/flexbar-sim.js"
   },
+  "files": [
+    "bin/",
+    "src/",
+    "ui/",
+    "LICENSE",
+    "README.md"
+  ],
   "scripts": {
     "start": "node bin/flexbar-sim.js",
-    "fixture": "node bin/flexbar-sim.js fixtures/test-plugin/com.mutedeck.simtest.plugin",
+    "fixture": "node bin/flexbar-sim.js fixtures/test-plugin/com.mutedeck.flexbar-simtest.plugin",
     "test": "node --test test/"
   },
   "engines": {

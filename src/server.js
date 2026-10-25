@@ -41,7 +41,7 @@ function summarize(value, depth = 0) {
 
 function serveFile(res, root, relative) {
   const file = path.normalize(path.join(root, relative))
-  if (!file.startsWith(root) || !fs.existsSync(file) || fs.statSync(file).isDirectory()) {
+  if (!file.startsWith(root.endsWith(path.sep) ? root : root + path.sep) || !fs.existsSync(file) || fs.statSync(file).isDirectory()) {
     res.writeHead(404).end('not found')
     return
   }
@@ -49,9 +49,31 @@ function serveFile(res, root, relative) {
   fs.createReadStream(file).pipe(res)
 }
 
-/** HTTP + WebSocket server for the browser UI. Binds to localhost only. */
+const LOCAL_HOSTS = new Set(['localhost', '127.0.0.1', '[::1]'])
+
+/** True for a Host header (`localhost:4790`) or Origin (`http://localhost:4790`) on this machine. */
+function isLocal(value, withScheme) {
+  if (!value) {
+    return false
+  }
+  try {
+    return LOCAL_HOSTS.has(new URL(withScheme ? value : `http://${value}`).hostname)
+  } catch {
+    return false
+  }
+}
+
+/**
+ * HTTP + WebSocket server for the browser UI. Binds to localhost only, and only answers requests
+ * addressed to localhost: browsers let any website open a WebSocket to localhost, and DNS rebinding
+ * can point a foreign name at 127.0.0.1, so the Host and Origin headers are checked too.
+ */
 export async function startUiServer(sim, { port = 4790 } = {}) {
   const server = http.createServer((req, res) => {
+    if (!isLocal(req.headers.host, false)) {
+      res.writeHead(403).end('forbidden')
+      return
+    }
     const url = new URL(req.url, 'http://localhost')
     if (url.pathname.startsWith('/mdi/')) {
       serveFile(res, MDI_DIR, url.pathname.slice('/mdi/'.length))
@@ -59,7 +81,11 @@ export async function startUiServer(sim, { port = 4790 } = {}) {
       serveFile(res, UI_DIR, url.pathname === '/' ? 'index.html' : url.pathname.slice(1))
     }
   })
-  const wss = new WebSocketServer({ server, path: '/ui' })
+  const wss = new WebSocketServer({
+    server,
+    path: '/ui',
+    verifyClient: ({ req }) => isLocal(req.headers.host, false) && isLocal(req.headers.origin, true),
+  })
   const broadcast = (message) => {
     const text = JSON.stringify(message)
     for (const client of wss.clients) {
