@@ -1,0 +1,25 @@
+{
+  "name": "flexbar-simulator",
+  "version": "0.1.0",
+  "private": true,
+  "description": "Protocol-level FlexDesigner + Flexbar simulator for developing Flexbar (FlexDesigner v1) plugins without hardware",
+  "type": "module",
+  "bin": {
+    "flexbar-sim": "bin/flexbar-sim.js"
+  },
+  "scripts": {
+    "start": "node bin/flexbar-sim.js",
+    "fixture": "node bin/flexbar-sim.js fixtures/test-plugin/com.mutedeck.simtest.plugin",
+    "test": "node --test test/"
+  },
+  "engines": {
+    "node": ">=20"
+  },
+  "dependencies": {
+    "@mdi/font": "^7.4.47",
+    "ws": "^8.18.0"
+  },
+  "devDependencies": {
+    "@eniac/flexdesigner": "^1.0.9"
+  }
+}

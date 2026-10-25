@@ -1,0 +1,97 @@
+<!doctype html>
+<html lang="en">
+<head>
+  <meta charset="utf-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1">
+  <title>Flexbar Simulator</title>
+  <link rel="stylesheet" href="/mdi/css/materialdesignicons.min.css">
+  <link rel="stylesheet" href="/style.css">
+</head>
+<body>
+  <header class="topbar">
+    <div class="brand"><i class="mdi mdi-view-sequential-outline"></i> Flexbar Simulator</div>
+    <div class="plugin-name" id="plugin-name">…</div>
+    <div class="pills">
+      <span class="pill" id="pill-ui">UI</span>
+      <span class="pill" id="pill-plugin">plugin</span>
+      <span class="pill" id="pill-device">device</span>
+    </div>
+    <div class="actions">
+      <button id="btn-device" title="Plug or unplug the simulated Flexbar (device.status)"><i class="mdi mdi-usb"></i> <span>Unplug</span></button>
+      <button id="btn-restart" title="Kill and relaunch the plugin backend"><i class="mdi mdi-restart"></i> Restart plugin</button>
+    </div>
+  </header>
+
+  <section class="device-area">
+    <div class="pages" id="pages"></div>
+    <div class="device-frame" id="device-frame">
+      <div class="strip-viewport" id="strip-viewport">
+        <div class="strip" id="strip"></div>
+        <div class="snackbar" id="device-snackbar" hidden></div>
+      </div>
+    </div>
+    <div class="strip-meta" id="strip-meta"></div>
+  </section>
+
+  <main class="panels">
+    <section class="panel" id="library-panel">
+      <h2>Key Library <small>click to add to the current page</small></h2>
+      <div id="library"></div>
+    </section>
+
+    <section class="panel" id="inspector-panel">
+      <h2>Key <small id="inspector-sub">select a key on the strip</small></h2>
+      <div id="inspector" class="inspector empty">Click a key's label under the strip to inspect it.</div>
+    </section>
+
+    <section class="panel wide" id="console-panel">
+      <nav class="tabs" id="tabs">
+        <button data-tab="log" class="active">Log</button>
+        <button data-tab="protocol">Protocol</button>
+        <button data-tab="tools">Tools</button>
+        <button data-tab="assumptions">Assumptions</button>
+      </nav>
+      <div class="tab" data-tab="log">
+        <div class="tab-actions"><label><input type="checkbox" id="log-autoscroll" checked> autoscroll</label> <button id="log-clear">Clear</button></div>
+        <pre class="log" id="log"></pre>
+      </div>
+      <div class="tab" data-tab="protocol" hidden>
+        <div class="tab-actions">
+          <label><input type="checkbox" id="proto-responses"> show responses</label>
+          <label><input type="checkbox" id="proto-frames"> show direct-draw frames</label>
+          <input id="proto-filter" placeholder="filter type…">
+          <button id="proto-clear">Clear</button>
+        </div>
+        <div class="protocol" id="protocol"></div>
+      </div>
+      <div class="tab tools" data-tab="tools" hidden>
+        <div class="tool">
+          <h3>ui.message <small>what a config page sends with <code>$fd.sendToBackend</code></small></h3>
+          <textarea id="ui-message" spellcheck="false">{"data": "test"}</textarea>
+          <button id="ui-message-send">Send</button> <code id="ui-message-result"></code>
+        </div>
+        <div class="tool">
+          <h3>Plugin config <small><code>config.json</code>; Save sends plugin.config.updated</small></h3>
+          <textarea id="config" spellcheck="false"></textarea>
+          <button id="config-save">Save</button>
+        </div>
+        <div class="tool">
+          <h3>Shortcuts <small>registered by the plugin (system.shortcut)</small></h3>
+          <div id="shortcuts"></div>
+        </div>
+        <div class="tool">
+          <h3>Chart data <small>custom-chart-data</small></h3>
+          <pre id="chart">none</pre>
+        </div>
+      </div>
+      <div class="tab" data-tab="assumptions" hidden>
+        <p>The simulator speaks the plugin protocol exactly as the SDK does. These host behaviours are <strong>guesses</strong> that still need checking on a real Flexbar:</p>
+        <ol id="assumptions"></ol>
+      </div>
+    </section>
+  </main>
+
+  <div class="toasts" id="toasts"></div>
+  <script src="/app.js" type="module"></script>
+</body>
+</html>

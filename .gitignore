@@ -1,0 +1,4 @@
+node_modules/
+.flexbar-sim/
+logs/
+.DS_Store

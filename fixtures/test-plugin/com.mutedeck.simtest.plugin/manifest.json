@@ -1,0 +1,83 @@
+{
+  "name": "Simulator Test",
+  "uuid": "com.mutedeck.simtest",
+  "version": "0.1.0",
+  "author": "MuteDeck",
+  "entry": "backend/plugin.mjs",
+  "description": "Exercises every key type and SDK call against the Flexbar simulator",
+  "repo": "",
+  "configPage": "",
+  "shortcuts": ["CommandOrControl+F1"],
+  "keyLibrary": {
+    "title": "$PluginName",
+    "style": { "icon": "mdi mdi-flask-outline" },
+    "children": [
+      {
+        "title": "$Counter.Title", "tip": "Tap to count; persists via setConfig",
+        "cid": "com.mutedeck.simtest.counter",
+        "config": { "keyType": "default", "clickable": true, "platform": ["windows", "mac"] },
+        "style": { "icon": "mdi mdi-counter", "width": 200 },
+        "data": { "step": 1 }
+      },
+      {
+        "title": "Toggle", "tip": "Multi-state key with 3 states",
+        "cid": "com.mutedeck.simtest.toggle",
+        "config": { "keyType": "multiState" },
+        "style": {
+          "icon": "mdi mdi-microphone", "width": 160,
+          "multiStyle": [
+            { "icon": "mdi mdi-microphone", "bgColor": "#2E7D32" },
+            { "icon": "mdi mdi-microphone-off", "bgColor": "#C62828" },
+            { "icon": "mdi mdi-microphone-question", "bgColor": "#555555" }
+          ]
+        },
+        "data": {}
+      },
+      {
+        "title": "Slider", "tip": "Absolute value",
+        "cid": "com.mutedeck.simtest.slider",
+        "config": { "keyType": "slider" },
+        "style": { "icon": "mdi mdi-tune-variant", "width": 320, "slider": { "color": "#4FC3F7", "width": 260, "format": "%0.1f %%", "min": 0, "max": 100, "decimals": 1 } },
+        "data": {}
+      },
+      {
+        "title": "Wheel", "tip": "Relative value",
+        "cid": "com.mutedeck.simtest.wheel",
+        "config": { "keyType": "wheel" },
+        "style": { "icon": "mdi mdi-tire", "width": 220, "wheel": { "step": 5 } },
+        "data": {}
+      },
+      {
+        "title": "Snackbar", "tip": "Device snackbar + haptic",
+        "cid": "com.mutedeck.simtest.snackbar",
+        "config": { "keyType": "default", "clickable": true },
+        "style": { "icon": "mdi mdi-message-alert-outline", "width": 140 },
+        "data": {}
+      },
+      {
+        "title": "Subpage", "cid": "com.eniac.navigation.page",
+        "style": { "icon": "mdi mdi-folder-outline", "width": 240 },
+        "data": { "path": "", "win": [] },
+        "children": [
+          {
+            "title": "Dynamic", "tip": "Container with child keys",
+            "cid": "com.mutedeck.simtest.dynamic",
+            "config": { "keyType": "dynamic" },
+            "style": { "icon": "mdi mdi-contain", "width": 480 },
+            "data": { "subkeyNum": 0 }
+          },
+          {
+            "title": "Direct Draw (PTT test)", "tip": "Hold to talk",
+            "cid": "com.mutedeck.simtest.directdraw",
+            "config": { "keyType": "directDraw" },
+            "style": { "icon": "mdi mdi-gradient-horizontal", "width": 240 },
+            "data": {}
+          }
+        ]
+      }
+    ]
+  },
+  "local": {
+    "en": { "PluginName": "Simulator Test", "Counter": { "Title": "Counter" } }
+  }
+}
